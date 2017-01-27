@@ -1,0 +1,36 @@
+---
+- name: Fix Nova Compute Configuration
+  hosts: compute
+  remote_user: heat-admin
+  gather_facts: no
+  become: true
+  tasks:
+
+  - name: Update DHCP Domain
+    lineinfile:
+      dest: /etc/nova/nova.conf
+      regexp: '^dhcp_domain='
+      line: 'dhcp_domain=fortnebula.com'
+
+  - name: Fix Nova Timeout Step 1
+    lineinfile:
+      dest: /etc/nova/nova.conf
+      insertafter: "^debug=False"
+      line: 'block_device_allocate_retries =  300'
+
+  - name: Fix Nova Timeout Step 2
+    lineinfile:
+      dest: /etc/nova/nova.conf
+      insertafter: "^block_device_allocate_retries"
+      line: 'block_device_allocate_retries_interval =  10'
+
+  - name: Fix Nova Timeout Step 3
+    lineinfile:
+      dest: /etc/nova/nova.conf
+      insertafter: "^block_device_allocate_retries_interval"
+      line: 'block_device_creation_timeout =  300'
+
+  - name: Restart Nova Compute
+    service:
+      name: openstack-nova-compute
+      state: restarted

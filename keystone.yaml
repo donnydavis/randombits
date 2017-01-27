@@ -1,0 +1,22 @@
+---
+- name: Fix Neutron Configuration
+  hosts: controller
+  remote_user: heat-admin
+  gather_facts: no
+  become: true
+  tasks:
+
+  - name: Copy Policy to Keystone
+    copy:
+      src: /home/stack/ooo-ansible/policy.json
+      dest: /etc/keystone/policy.json
+
+  - name: Copy Policy to Horizon
+    copy:
+      src: /home/stack/ooo-ansible/policy.json
+      dest: /etc/openstack-dashboard/keystone_policy.json
+
+  - name: Restart httpd
+    service:
+      name: httpd
+      state: restarted
