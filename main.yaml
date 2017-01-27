@@ -1,0 +1,11 @@
+---
+- name: Update Openstack Configuration
+  hosts: all
+  remote_user: heat-admin
+  gather_facts: no
+  become: true
+
+- include: neutron.yaml
+- include: nova_controller.yaml
+- include: nova_compute.yaml
+- include: keystone.yaml
