@@ -10,3 +10,4 @@
 - include: neutron_compute.yaml
 - include: nova_compute.yaml
 - include: nova_controller.yaml
+- include: lbaasv2.yaml
