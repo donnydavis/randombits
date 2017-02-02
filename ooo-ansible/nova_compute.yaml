@@ -30,6 +30,15 @@
       insertafter: "^block_device_allocate_retries_interval"
       line: 'block_device_creation_timeout =  300'
 
+  - name: Remove kvm-intel module
+    shell: rmmod kvm-intel
+
+  - name: Loaded Nested Virt into modprobe
+    shell: sh -c "echo 'options kvm-intel nested=y' >> /etc/modprobe.d/dist.conf"
+
+  - name: Reload kvm-intel module
+    shell: modprobe kvm-intel
+
   - name: Restart Nova Compute
     service:
       name: openstack-nova-compute

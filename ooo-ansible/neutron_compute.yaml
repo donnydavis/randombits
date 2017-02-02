@@ -1,0 +1,24 @@
+---
+- name: Fix Neutron Configuration
+  hosts: compute
+  remote_user: heat-admin
+  gather_facts: no
+  become: true
+  tasks:
+
+  - name: Update MTU
+    lineinfile:
+      dest: /etc/neutron/neutron.conf
+      regexp: "^global_physnet_mtu"
+      line: 'global_physnet_mtu=9000'
+
+  - name: Update External Network MTU
+    lineinfile:
+      dest: /etc/neutron/plugins/ml2/ml2_conf.ini
+      insertafter: "^#physical_network_mtus"
+      line: 'physical_network_mtus = datacentre:1500'
+
+  - name: Restart Neutron OpenvSwitch Agent
+    service:
+      name: neutron-openvswitch-agent
+      state: restarted

@@ -10,4 +10,4 @@
     lineinfile:
       dest: /etc/resolv.conf
       insertafter: "^search"
-      line: 'search somethingelse.domain.com'
+      line: 'search cloud.fortnebula.com'

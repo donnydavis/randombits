@@ -8,12 +8,12 @@
 
   - name: Copy Policy to Keystone
     copy:
-      src: /home/stack/ooo-ansible/policy.json
+      src: /home/stack/newton/ooo-ansible/policy.json
       dest: /etc/keystone/policy.json
 
   - name: Copy Policy to Horizon
     copy:
-      src: /home/stack/ooo-ansible/policy.json
+      src: /home/stack/newton/ooo-ansible/policy.json
       dest: /etc/openstack-dashboard/keystone_policy.json
 
   - name: Restart httpd
