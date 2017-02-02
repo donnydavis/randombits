@@ -1,0 +1,67 @@
+---
+- name: Install Neutron lbaasV2
+  hosts: controller
+  remote_user: heat-admin
+  gather_facts: no
+  become: true
+  tasks:
+
+  - name: Install Openstack Neutron lbaas
+    yum: name={{ item }} state=installed
+    with_items:
+      - openstack-neutron-lbaas
+      - openstack-neutron-lbaas-ui
+      - python-neutron-lbaas
+
+  - name: Update neutron.conf service plugins
+    lineinfile:
+      dest: /etc/neutron/neutron.conf
+      regexp: "^service_plugins"
+      line: 'service_plugins=router,qos,trunk,neutron_lbaas.services.loadbalancer.plugin.LoadBalancerPluginv2'
+
+  - name: Update neutron lbaas
+    lineinfile:
+      dest: /etc/neutron/neutron_lbaas.conf
+      insertafter: "^#service_provider"
+      line: 'service_provider = LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default'
+
+  - name: Add interface driver to lbaas agent
+    lineinfile:
+      dest: /etc/neutron/lbaas_agent.ini
+      insertafter: "^#interface_driver"
+      line: 'interface_driver = openvswitch'
+
+  - name: Add user group to lbaas agent
+    lineinfile:
+      dest: /etc/neutron/lbaas_agent.ini
+      insertafter: "^interface_driver"
+      line: 'user_group = haproxy'
+
+  - name: Enable lbaas in Horizon
+    lineinfile:
+      dest: /etc/openstack-dashboard/local_settings
+      regexp: "^    'enable_lb'"
+      line: "    'enable_lb': True,"
+
+  - name: Upgrade Neutron Database
+    shell: neutron-db-manage --subproject neutron-lbaas upgrade head
+
+  - name: Restart Neutron Server
+    service:
+      name: neutron-server
+      state: restarted
+
+  - name: Enable lbaas service
+    service:
+      name: neutron-lbaasv2-agent
+      enabled: yes
+
+  - name: Start lbaas service
+    service:
+      name: neutron-lbaasv2-agent
+      state: started
+
+  - name: Restart Openstack Dashboard
+    service:
+      name: httpd
+      state: restarted
