@@ -18,7 +18,39 @@
       insertafter: "^#quota_floatingip"
       line: 'quota_floatingip = 2'
 
+  - name: Update MTU
+    lineinfile:
+      dest: /etc/neutron/neutron.conf
+      regexp: "^global_physnet_mtu"
+      line: 'global_physnet_mtu=9000'
+
+  - name: Update External Network MTU
+    lineinfile:
+      dest: /etc/neutron/plugins/ml2/ml2_conf.ini
+      insertafter: "^#physical_network_mtus"
+      line: 'physical_network_mtus = datacentre:1500'
+
   - name: Restart Neutron Server
     service:
       name: neutron-server
+      state: restarted
+
+  - name: Restart Neutron DHCP Agent
+    service:
+      name: neutron-dhcp-agent
+      state: restarted
+
+  - name: Restart Neutron L3-Agent
+    service:
+      name: neutron-l3-agent
+      state: restarted
+
+  - name: Restart Neutron MetaData Agent
+    service:
+      name: neutron-metadata-agent
+      state: restarted
+
+  - name: Restart Neutron OpenvSwitch Agent
+    service:
+      name: neutron-openvswitch-agent
       state: restarted
