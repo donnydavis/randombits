@@ -1,0 +1,9 @@
+clouds:
+  fortnebula:
+    auth:
+        auth_url: https://openstack.fortnebula.com:13000/v3
+        username: your_username_here
+        password: ********
+        project_name: fn_admin
+        project_domain_name: fortnebula.com
+        user_domain_name: fortnebula.com
