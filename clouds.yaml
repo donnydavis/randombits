@@ -1,9 +1,16 @@
 clouds:
-  fortnebula:
+  fortnebula: #This is the name of the cloud you will call in your playbook
     auth:
-        auth_url: https://openstack.fortnebula.com:13000/v3
-        username: your_username_here
-        password: ********
-        project_name: your_project_here
-        project_domain_name: fortnebula.com
-        user_domain_name: fortnebula.com
+      auth_url: https://openstack.fortnebula.com:13000/v3
+      username: your_username_here
+      password: ********
+      project_name: your_project_here
+      project_domain_name: fortnebula.com
+      user_domain_name: fortnebula.com
+    networks: # You can use this seciton to call out your public networks. 
+    - name: Public #This ensures when you call a host out in a playbook, it will use the public IP 
+      routes_externally: true
+ansible: # This section is here so you can use dynamic inventories in Ansible. 
+  use_hostnames: True
+  expand_hostvars: False
+  fail_on_errors: True
