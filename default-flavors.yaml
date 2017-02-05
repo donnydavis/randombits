@@ -1,0 +1,50 @@
+---
+- name: Create Default Flavors
+  hosts: localhost
+  gather_facts: no
+  tasks:
+
+  - name: Create Tiny Flavor
+    os_nova_flavor:
+      cloud: fortnebula
+      state: present
+      name: m1.tiny
+      ram: 512
+      vcpus: 1
+      disk: 1
+
+  - name: Create Small Flavor
+    os_nova_flavor:
+      cloud: fortnebula
+      state: present
+      name: m1.small
+      ram: 2048
+      vcpus: 1
+      disk: 20
+
+  - name: Create Medium Flavor
+    os_nova_flavor:
+      cloud: fortnebula
+      state: present
+      name: m1.medium
+      ram: 4096
+      vcpus: 2
+      disk: 40
+
+  - name: Create Large Flavor
+    os_nova_flavor:
+      cloud: fortnebula
+      state: present
+      name: m1.large
+      ram: 8192
+      vcpus: 4
+      disk: 80
+
+  - name: Create XLarge Flavor
+    os_nova_flavor:
+      cloud: fortnebula
+      state: present
+      name: m1.xlarge
+      ram: 16384
+      vcpus: 8
+      disk: 160
