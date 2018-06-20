@@ -8,7 +8,7 @@ Create this folder in your home dir
     mkdir -p ~/.config/openstack
     curl -o ~/.config/openstack/clouds.yaml https://raw.githubusercontent.com/donnydavis/randombits/master/clouds.yaml
     vi ~/.config/openstack/clouds.yaml # Edit to fit your Openstack Cloud
-    sudo curl -o /etc/ansible/hosts https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/openstack.py
+    sudo curl -o /etc/ansible/hosts https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/openstack_inventory.py
     sudo chmod +x /etc/ansible/hosts
 
 
