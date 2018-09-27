@@ -1,0 +1,9 @@
+---
+- name: RPM GPG Key
+  hosts: localhost
+  become: true
+  tasks:
+  - name: Check for Public Keys
+    command: rpm -q gpg-pubkey
+    register: rpm_gpg_pubkey
+  - debug: msg="{{ rpm_gpg_pubkey }}"
