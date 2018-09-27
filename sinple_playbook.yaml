@@ -7,6 +7,6 @@
     command: rpm -q gpg-pubkey
     register: rpm_gpg_pubkey
     
-  - name: Check for Public Keys
+  - name: Run when gpg key doesn't exist
     shell: echo "{{ rpm_gpg_pubkey.stdout }}" > test
-
+    when: rpm_gpg_pubkey.stdout == ""
